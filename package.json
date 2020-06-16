@@ -1,0 +1,82 @@
+{
+	"name": "@marfeel/analytics-providers-PROVIDER_NAME",
+	"version": "1.0.0",
+	"description": "PROVIDER_NAME provider",
+	"main": "dist/index.es2015.js",
+	"scripts": {
+		"build": "npm run build:bundle && npm run build:extractor && npm run build:playground",
+		"build:dev": "npm run build:bundle:dev && npm run build:extractor:dev",
+		"build:extractor": "provider-cli build -p --configs-path='./node_modules/@marfeel/analytics-providers-cli/extractors/'",
+		"build:extractor:dev": "provider-cli build --configs-path='./node_modules/@marfeel/analytics-providers-cli/extractors/'",
+		"build:bundle": "provider-cli build -p --configs-path='./node_modules/@marfeel/analytics-providers-cli/bundle/'",
+		"build:bundle:dev": "provider-cli build --configs-path='./node_modules/@marfeel/analytics-providers-cli/bundle/'",
+		"build:playground": "provider-cli docs:build --configs-path='./node_modules/@marfeel/analytics-providers-playground/' --statics-path='./node_modules/@marfeel/analytics-providers-playground/public/'",
+		"validateJson": "analytics-schema-validation",
+		"deploy": "provider-cli deploy",
+		"deploy:playground": "provider-cli docs:publish",
+		"lint": "provider-cli lint",
+		"test": "provider-cli test --configs-path='./node_modules/@marfeel/analytics-providers-cli/'",
+		"acid-tests": "provider-cli test --configs-path='./node_modules/@marfeel/analytics-providers-acid-tests'",
+		"start": "provider-cli start --configs-path='./node_modules/@marfeel/analytics-providers-playground/' --statics-path='./node_modules/@marfeel/analytics-providers-playground/public/'"
+	},
+	"repository": {
+		"type": "git",
+		"url": "ssh://git@github.com:Marfeel/marfeel-releases.git"
+	},
+	"keywords": [
+		"analytic",
+		"PROVIDER_NAME"
+	],
+	"author": "Marfeel",
+	"license": "ISC",
+	"publishConfig": {
+		"registry": "https://npm.pkg.github.com/"
+	},
+	"bugs": {
+		"url": "https://github.com/Marfeel/analytics-providers-PROVIDER_NAME/issues"
+	},
+	"files": [
+		"dist/*.js",
+		"schema/*.json"
+	],
+	"eslintConfig": {
+		"parserOptions": {
+			"project": "./tsconfig.json"
+		},
+		"extends": [
+			"@marfeel/ts",
+			"@marfeel/jest"
+		],
+		"globals": {
+			"process": true,
+			"__dirname": true
+		}
+	},
+	"eslintIgnore": [
+		"node_modules",
+		"jest.config.js",
+		"jest.setup.js",
+		"babel.config.js",
+		"dist",
+		"lib",
+		"coverage",
+		"playground-dist"
+	],
+	"homepage": "https://github.com/Marfeel/analytics-providers-PROVIDER_NAME/blob/master/README.md",
+	"devDependencies": {
+		"@babel/plugin-transform-runtime": "^7.9.6",
+		"@marfeel/analytics-providers-acid-tests": "^1.0.1-snapshot.30",
+		"@marfeel/analytics-providers-cli": "^1.3.1-snapshot.30",
+		"@marfeel/analytics-providers-environment": "^1.2.1-snapshot.32",
+		"@marfeel/analytics-providers-playground": "^1.0.1-snapshot.45",
+		"@marfeel/eslint-config-jest": "^1.0.1-snapshot.44",
+		"@marfeel/eslint-config-node": "^1.0.1-snapshot.44",
+		"@marfeel/eslint-config-ts": "^1.0.1-snapshot.55",
+		"@marfeel/provider-cli": "^1.0.1-snapshot.335",
+		"babel-loader": "^8.1.0"
+	},
+	"playgroundPublisher": {
+		"publishFolder": "playground-dist",
+		"publishName": "PROVIDER_NAME"
+	}
+}

@@ -1,0 +1,52 @@
+name: Build
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-tests:
+    name: Build and tests
+    runs-on: ubuntu-latest
+    if: github.event.repository.name != 'analytics-providers-template'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@marfeel'
+
+      - name: 📦 Initialize
+        uses: Marfeel/github-actions/common/actions/initialize@master
+        with:
+          gh-token: ${{ secrets.GH_PACKAGE_REGISTRY_TOKEN }}
+
+      - name: ✅ Validate JSON
+        run: npm run validateJson
+
+      - name: 👀 Lint
+        run: npm run lint
+
+      - name: ✅ Tests
+        run: npm test
+
+      - name: 🛠 Build
+        run: npm run build
+
+      - name: ✅ ACID tests
+        run: npm run acid-tests
+
+      - name: 🚀 Publish
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        run: |
+          git config --local user.email "tech@marfeel.com"
+          git config --local user.name "Github Action"
+          npm run deploy:playground -- --gh-token ${{ secrets.GH_PACKAGE_REGISTRY_TOKEN }}
+          npm run deploy -- -k ${{ secrets.AWS_KEY }} -s ${{ secrets.AWS_SECRET }} -f dist/extractor.js
+          npm run deploy -- -k ${{ secrets.AWS_KEY }} -s ${{ secrets.AWS_SECRET }} -f schema/index.json
+          npm publish
